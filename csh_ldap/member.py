@@ -24,13 +24,13 @@ class CSHMember:
             res = self.__con__.search_s(
                 self.__ldap_user_ou__,
                 ldap.SCOPE_SUBTREE,
-                "(uid=%s)" % search_val,
+                f"(uid={search_val})",
                 ['ipaUniqueID'])
         else:
             res = self.__con__.search_s(
                 self.__ldap_user_ou__,
                 ldap.SCOPE_SUBTREE,
-                "(ipaUniqueID=%s)" % search_val,
+                f"(ipaUniqueID={search_val})",
                 ['uid'])
 
         if res:
@@ -51,7 +51,7 @@ class CSHMember:
     def __repr__(self):
         """Generate a str representation of the bound CSH LDAP member object.
         """
-        return "CSH Member(dn: %s)" % self.__dn__
+        return f"CSH Member(dn: {self.__dn__})"
 
     def get(self, key):
         """Get an attribute from the bound CSH LDAP member object.
@@ -59,7 +59,7 @@ class CSHMember:
         Arguments:
         key -- the attribute to get the value of
         """
-        return self.__getattr__(key, as_list=True)
+        return self._get_attr(key, as_list=True)
 
     @reconnect_on_fail
     def groups(self):
@@ -91,7 +91,7 @@ class CSHMember:
         return self.__dn__
 
     @reconnect_on_fail
-    def __getattr__(self, key, as_list=False):
+    def _get_attr(self, key, as_list=False):
         res = self.__con__.search_s(
             self.__dn__,
             ldap.SCOPE_BASE,
@@ -153,7 +153,4 @@ class CSHMember:
                 mod_str = "ADD"
             else:
                 mod_str = "REPLACE"
-            print("{} FIELD {} WITH {} FOR {}".format(mod_str,
-                                                      key,
-                                                      value,
-                                                      self.__dn__))
+            print(f"{mod_str} FIELD {key} WITH {value} FOR {self.__dn__}")
