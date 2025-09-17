@@ -1,2 +1,2 @@
-python-ldap==3.4.0
+python-ldap==3.4.4
 srvlookup==2.0.0
