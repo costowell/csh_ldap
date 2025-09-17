@@ -21,7 +21,7 @@ class CSHGroup:
         res = self.__con__.search_s(
             self.__ldap_group_ou__,
             ldap.SCOPE_SUBTREE,
-            "(cn=%s)" % search_val,
+            f"(cn={search_val})",
             ['cn'])
 
         if res:
@@ -35,7 +35,7 @@ class CSHGroup:
         res = self.__con__.search_s(
             self.__ldap_base_dn__,
             ldap.SCOPE_SUBTREE,
-            "(memberof=%s)" % self.__dn__,
+            f"(memberof={self.__dn__})",
             ['uid'])
 
         ret = []
@@ -69,13 +69,13 @@ class CSHGroup:
             res = self.__con__.search_s(
                 self.__dn__,
                 ldap.SCOPE_BASE,
-                "(member=%s)" % dn,
+                f"(member={dn})",
                 ['ipaUniqueID'])
         else:
             res = self.__con__.search_s(
                 self.__dn__,
                 ldap.SCOPE_BASE,
-                "(member=%s)" % member.get_dn(),
+                f"(member={member.get_dn()})",
                 ['ipaUniqueID'])
         return len(res) > 0
 
@@ -105,7 +105,7 @@ class CSHGroup:
             mod_attrs = [mod]
             self.__con__.modify_s(self.__dn__, mod_attrs)
         else:
-            print("ADD VALUE member = {} FOR {}".format(mod[2], self.__dn__))
+            print(f"ADD VALUE member = {mod[2]} FOR {self.__dn__}")
 
     @reconnect_on_fail
     def del_member(self, member, dn=False):
@@ -133,5 +133,4 @@ class CSHGroup:
             mod_attrs = [mod]
             self.__con__.modify_s(self.__dn__, mod_attrs)
         else:
-            print("DELETE VALUE member = {} FOR {}".format(mod[2],
-                                                           self.__dn__))
+            print(f"DELETE VALUE member = {mod[2]} FOR {self.__dn__}")

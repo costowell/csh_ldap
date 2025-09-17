@@ -1,33 +1,29 @@
 [MASTER]
-ignore = ,input
+ignore-paths=input
 persistent = yes
 
 [MESSAGES CONTROL]
 disable =
     missing-docstring,
-	fixme,
-	duplicate-code,
-	no-member,
-	parse-error,
-	bad-continuation,
-	too-few-public-methods,
-	global-statement,
-	cyclic-import,
-	locally-disabled,
-	file-ignored,
+    fixme,
+    duplicate-code,
+    no-member,
+    parse-error,
+    too-few-public-methods,
+    global-statement,
+    cyclic-import,
+    locally-disabled,
+    file-ignored,
     import-error,
     unused-import
 
 [REPORTS]
 output-format = text
-files-output = no
 reports = no
 
 [FORMAT]
 max-line-length = 120
-max-statement-lines = 75
 single-line-if-stmt = no
-no-space-check = trailing-comma,dict-separator
 max-module-lines = 1000
 indent-string = '    '
 
@@ -75,8 +71,8 @@ good-names=logger,id,ID
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata
 
-# List of builtins function names that should not be used, separated by a comma
-bad-functions=apply,input
+# Note: bad-functions option was removed in modern pylint versions
+# Use specific pylint checks instead
 
 
 [DESIGN]
@@ -92,4 +88,4 @@ min-public-methods = 2
 max-public-methods = 20
 
 [EXCEPTIONS]
-overgeneral-exceptions = Exception
+overgeneral-exceptions = builtins.Exception

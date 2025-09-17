@@ -25,12 +25,14 @@ def reconnect_on_fail(method):
         :return: result of method call
         """
         max_reconnects = MAX_RECONNECTS
-        is_cshldap = lambda arg: any(
+
+        def is_cshldap(arg):
+            return any(
                 filter(
                     lambda t: t.__name__ == 'CSHLDAP',
                     type(arg).__mro__
-                    )
                 )
+            )
         ldap_obj = next(filter(is_cshldap, method_args)) \
                    if any(filter(is_cshldap, method_args)) \
                    else method_args[0].__lib__
@@ -55,5 +57,6 @@ def reconnect_on_fail(method):
                 max_reconnects -= 1
                 if max_reconnects == 0:
                     raise
+        return None
 
     return wrapper

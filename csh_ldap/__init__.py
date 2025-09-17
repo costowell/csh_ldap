@@ -11,7 +11,7 @@ class CSHLDAP:
     __domain__ = "csh.rit.edu"
 
     @reconnect_on_fail
-    def __init__(self, bind_dn, bind_pw, batch_mods=False,
+    def __init__(self, bind_dn, bind_pw, *, batch_mods=False,
                  sasl=False, ro=False):
         """Handler for bindings to CSH LDAP.
 
@@ -74,7 +74,7 @@ class CSHLDAP:
         members = self.__con__.search_s(
             CSHMember.__ldap_user_ou__,
             ldap.SCOPE_SUBTREE,
-            "(ibutton=%s)" % val,
+            f"(ibutton={val})",
             ['ipaUniqueID'])
         if members:
             return CSHMember(
@@ -96,7 +96,7 @@ class CSHLDAP:
         members = self.__con__.search_s(
             CSHMember.__ldap_user_ou__,
             ldap.SCOPE_SUBTREE,
-            "(slackuid=%s)" % slack,
+            f"(slackuid={slack})",
             ['ipaUniqueID'])
         if members:
             return CSHMember(
@@ -132,7 +132,7 @@ class CSHLDAP:
         res = self.__con__.search_s(
             __ldap_group_ou__,
             ldap.SCOPE_SUBTREE,
-            "(cn=eboard-%s)" % val,
+            f"(cn=eboard-{val})",
             ['member'])
 
         ret = []
@@ -176,19 +176,14 @@ class CSHLDAP:
                             mod_str = "ADD"
                         else:
                             mod_str = "REPLACE"
-                        print("{} VALUE {} = {} FOR {}".format(mod_str,
-                                                               mod[1],
-                                                               mod[2],
-                                                               dn))
+                        print(f"{mod_str} VALUE {mod[1]} = {mod[2]} FOR {dn}")
                 else:
                     self.__con__.modify_s(dn, self.__mod_queue__[dn])
             except ldap.TYPE_OR_VALUE_EXISTS:
-                print("Error! Conflicting Batch Modification: %s"
-                      % str(self.__mod_queue__[dn]))
+                print(f"Error! Conflicting Batch Modification: {self.__mod_queue__[dn]}")
                 continue
             except ldap.NO_SUCH_ATTRIBUTE:
-                print("Error! Conflicting Batch Modification: %s"
-                      % str(self.__mod_queue__[dn]))
+                print(f"Error! Conflicting Batch Modification: {self.__mod_queue__[dn]}")
                 continue
             self.__mod_queue__[dn] = None
         self.__pending_mod_dn__ = []
