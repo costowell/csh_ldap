@@ -59,7 +59,7 @@ class CSHMember:
         Arguments:
         key -- the attribute to get the value of
         """
-        return self._get_attr(key, as_list=True)
+        return self.__getattr__(key, as_list=True) # pylint: disable=unnecessary-dunder-call
 
     @reconnect_on_fail
     def groups(self):
@@ -91,7 +91,7 @@ class CSHMember:
         return self.__dn__
 
     @reconnect_on_fail
-    def _get_attr(self, key, as_list=False):
+    def __getattr__(self, key, as_list=False):
         res = self.__con__.search_s(
             self.__dn__,
             ldap.SCOPE_BASE,
