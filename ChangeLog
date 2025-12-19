@@ -4,16 +4,21 @@ CHANGES
 2.5.1
 -----
 
-* fix: _get_attr -> __getattr__
+* bump: 2.5.1
+* fix: \_get\_attr -> \_\_getattr\_\_
 
-2.5.0
------
+v2.5.0
+------
 
-* Bump python-ldap from 3.0.0 to 3.4.0
+* Bump to 2.5.0
+* Bump python-ldap from 3.4.0 to 3.4.4
+* fix: bump pylint and python version in CI
 
 2.4.0
 -----
 
+* Bump to 2.4.0
+* Bump python-ldap from 3.0.0 to 3.4.0
 * swap from travis to github actions
 
 2.3.1
